@@ -1,17 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 
-
-
-const inter = Inter({
-  // variable: "--font-inter",
+const outfit = Outfit({
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "ProjectShare",
-  description: "Share your projects with the world",
+  title: "ProjectShare - Share Your Creations, Discover New Launches",
+  description:
+    "A community platform for creators to showcase their apps, AI tools, SaaS products, and creative projects. Authentic launches, real builders, genuine feedback.",
 };
 
 export default function RootLayout({
@@ -22,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased`}
+        className={`${outfit.className} antialiased bg-background text-foreground`}
       >
         {children}
       </body>
