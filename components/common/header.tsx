@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { CompassIcon, HomeIcon, SparkleIcon, SparklesIcon } from "lucide-react";
+import {
+  CompassIcon,
+  HomeIcon,
+  SparkleIcon,
+  SparklesIcon,
+  UserIcon,
+} from "lucide-react";
 import { Button } from "../ui/button";
 
 const Logo = () => {
@@ -16,6 +22,7 @@ const Logo = () => {
 };
 
 export default function Header() {
+  const isSignedIn = true; // Replace with actual authentication logic
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="wrapper px-12">
@@ -36,17 +43,29 @@ export default function Header() {
               <CompassIcon className="size-4" />
               <span>Explore</span>
             </Link>
-            <div className="flex items-center gap-3">
-              <Button asChild>
-                <Link href="/submit">
-                  <SparklesIcon className="size-4" />
-                  Submit Project
-                </Link>
-              </Button>
-              <Button variant="ghost">Sign In</Button>
-              <Button>Sign Up</Button>
-            </div>
           </nav>
+
+          <div className="flex items-center gap-3">
+            {isSignedIn ? (
+              <>
+                <Button asChild>
+                  <Link href="/submit">
+                    <SparklesIcon className="size-4" />
+                    Submit Project
+                  </Link>
+                </Button>
+                {/* clerk user */}
+                <Button variant="ghost">
+                  <UserIcon className="size-4" />
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost">Sign In</Button>
+                <Button>Sign Up</Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </header>
