@@ -5,12 +5,7 @@ import { productSchema } from "./product-validation";
 import { db } from "@/db";
 import { products } from "@/db/schema";
 import z from "zod";
-
-type FormState = {
-  success: boolean;
-  error: Record<string, string>;
-  message: string;
-};
+import { FormState } from "@/types";
 
 export const addProductAction = async (
   prevState: FormState,
