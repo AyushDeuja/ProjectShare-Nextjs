@@ -77,9 +77,9 @@ export const addProductAction = async (
         message: "Validation failed. Please check the form.",
       };
     }
+    console.error("Failed to submit product:", error);
     return {
       success: false,
-      errors: error,
       message: "Failed to submit product.",
     };
   }
