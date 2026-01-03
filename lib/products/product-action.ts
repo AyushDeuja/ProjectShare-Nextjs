@@ -6,6 +6,7 @@ import { db } from "@/db";
 import { products } from "@/db/schema";
 import z from "zod";
 import { FormState } from "@/types";
+import { eq, sql } from "drizzle-orm";
 
 export const addProductAction = async (
   prevState: FormState,
@@ -81,6 +82,84 @@ export const addProductAction = async (
     return {
       success: false,
       message: "Failed to submit product.",
+    };
+  }
+};
+
+export const upVoteProductAction = async (productId: number) => {
+  try {
+    const { userId, orgId } = await auth();
+
+    if (!userId) {
+      return {
+        success: false,
+        message: "User must be logged in to submit a product.",
+      };
+    }
+
+    if (!orgId) {
+      return {
+        success: false,
+        message: "User must belong to an organization to submit a product.",
+      };
+    }
+
+    await db
+      .update(products)
+      .set({
+        voteCount: sql`GREATEST(0, vote_count + 1)`,
+      })
+      .where(eq(products.id, productId));
+
+    return {
+      success: true,
+      message: "Product upvoted successfully.",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Failed to upvote product.",
+      voteCount: 0,
+    };
+  }
+};
+
+export const downVoteProductAction = async (productId: number) => {
+  try {
+    const { userId, orgId } = await auth();
+
+    if (!userId) {
+      return {
+        success: false,
+        message: "User must be logged in to submit a product.",
+      };
+    }
+
+    if (!orgId) {
+      return {
+        success: false,
+        message: "User must belong to an organization to submit a product.",
+      };
+    }
+
+    await db
+      .update(products)
+      .set({
+        voteCount: sql`GREATEST(0, vote_count - 1)`,
+      })
+      .where(eq(products.id, productId));
+
+    return {
+      success: true,
+      message: "Product downvoted successfully.",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Failed to downtove product.",
+      voteCount: 0,
     };
   }
 };

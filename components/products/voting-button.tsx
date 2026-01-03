@@ -1,18 +1,38 @@
-import React from "react";
+"use client";
 import { Button } from "../ui/button";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  downVoteProductAction,
+  upVoteProductAction,
+} from "@/lib/products/product-action";
 
 const VotingButtons = ({
   hasVoted,
   voteCount,
+  productId,
 }: {
   hasVoted: boolean;
   voteCount: number;
+  productId?: number;
 }) => {
+  const handleUpVote = async () => {
+    const result = await upVoteProductAction(productId!);
+  };
+  const handleDownVote = async () => {
+    const result = await downVoteProductAction(productId!);
+    console.log(result);
+  };
   return (
-    <div className="flex flex-col items-center gap-1 shrink-0">
+    <div
+      className="flex flex-col items-center gap-1 shrink-0"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    >
       <Button
+        onClick={handleUpVote}
         variant="ghost"
         size="icon-sm"
         className={cn(
@@ -28,6 +48,7 @@ const VotingButtons = ({
         {voteCount}
       </span>
       <Button
+        onClick={handleDownVote}
         variant="ghost"
         size="icon-sm"
         className={cn(

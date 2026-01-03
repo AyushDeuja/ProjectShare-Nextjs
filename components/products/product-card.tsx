@@ -38,7 +38,11 @@ const ProductCard = ({ product }: { product: Product }) => {
               <CardDescription>{product.description}</CardDescription>
             </div>
             {/* voting button here */}
-            <VotingButtons voteCount={product.voteCount} hasVoted />
+            <VotingButtons
+              voteCount={product.voteCount}
+              hasVoted
+              productId={product.id}
+            />
           </div>
         </CardHeader>
         <CardFooter>
