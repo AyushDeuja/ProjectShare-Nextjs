@@ -7,6 +7,7 @@ import { products } from "@/db/schema";
 import z from "zod";
 import { FormState } from "@/types";
 import { eq, sql } from "drizzle-orm";
+import { refresh, revalidatePath } from "next/cache";
 
 export const addProductAction = async (
   prevState: FormState,
@@ -110,6 +111,7 @@ export const upVoteProductAction = async (productId: number) => {
         voteCount: sql`GREATEST(0, vote_count + 1)`,
       })
       .where(eq(products.id, productId));
+    revalidatePath("/");
 
     return {
       success: true,
@@ -150,6 +152,7 @@ export const downVoteProductAction = async (productId: number) => {
       })
       .where(eq(products.id, productId));
 
+    revalidatePath("/");
     return {
       success: true,
       message: "Product downvoted successfully.",

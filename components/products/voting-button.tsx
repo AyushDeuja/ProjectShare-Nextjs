@@ -6,22 +6,31 @@ import {
   downVoteProductAction,
   upVoteProductAction,
 } from "@/lib/products/product-action";
+import { useOptimistic } from "react";
+import { init } from "next/dist/compiled/webpack/webpack";
+import { set } from "zod";
 
 const VotingButtons = ({
   hasVoted,
-  voteCount,
+  voteCount: initialVoteCount,
   productId,
 }: {
   hasVoted: boolean;
   voteCount: number;
   productId?: number;
 }) => {
+  const [optimisticVoteCount, setOptimisticVoteCount] = useOptimistic(
+    initialVoteCount,
+    (currentCount, change: number) => Math.max(0, currentCount + change)
+  );
+
   const handleUpVote = async () => {
-    const result = await upVoteProductAction(productId!);
+    setOptimisticVoteCount(1);
+    await upVoteProductAction(productId!);
   };
   const handleDownVote = async () => {
-    const result = await downVoteProductAction(productId!);
-    console.log(result);
+    setOptimisticVoteCount(-1);
+    await downVoteProductAction(productId!);
   };
   return (
     <div
@@ -45,7 +54,7 @@ const VotingButtons = ({
         <ChevronUpIcon className="size-5" />
       </Button>
       <span className="text-sm font-semibold transition-colors text-foreground">
-        {voteCount}
+        {optimisticVoteCount}
       </span>
       <Button
         onClick={handleDownVote}
