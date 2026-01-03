@@ -6,7 +6,7 @@ import {
   downVoteProductAction,
   upVoteProductAction,
 } from "@/lib/products/product-action";
-import { useOptimistic } from "react";
+import { useOptimistic, useTransition } from "react";
 import { init } from "next/dist/compiled/webpack/webpack";
 import { set } from "zod";
 
@@ -24,13 +24,19 @@ const VotingButtons = ({
     (currentCount, change: number) => Math.max(0, currentCount + change)
   );
 
+  const [isPending, startTransition] = useTransition();
+
   const handleUpVote = async () => {
-    setOptimisticVoteCount(1);
-    await upVoteProductAction(productId!);
+    startTransition(async () => {
+      setOptimisticVoteCount(1);
+      await upVoteProductAction(productId!);
+    });
   };
   const handleDownVote = async () => {
-    setOptimisticVoteCount(-1);
-    await downVoteProductAction(productId!);
+    startTransition(async () => {
+      setOptimisticVoteCount(-1);
+      await downVoteProductAction(productId!);
+    });
   };
   return (
     <div
@@ -44,6 +50,7 @@ const VotingButtons = ({
         onClick={handleUpVote}
         variant="ghost"
         size="icon-sm"
+        disabled={isPending}
         className={cn(
           "h-8 w-8 text-primary hover:bg-primary/20",
           hasVoted
@@ -60,6 +67,7 @@ const VotingButtons = ({
         onClick={handleDownVote}
         variant="ghost"
         size="icon-sm"
+        disabled={isPending}
         className={cn(
           "h-8 w-8 text-primary hover:text-destructive",
           hasVoted ? "hover:text-destructive" : "opacity-50 cursor-not-allowed"
