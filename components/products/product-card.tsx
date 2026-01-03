@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { InferSelectModel } from "drizzle-orm";
 import { products } from "@/db/schema";
+import VotingButtons from "./voting-button";
 
 type Product = InferSelectModel<typeof products>;
 
@@ -37,35 +38,7 @@ const ProductCard = ({ product }: { product: Product }) => {
               <CardDescription>{product.description}</CardDescription>
             </div>
             {/* voting button here */}
-            <div className="flex flex-col items-center gap-1 shrink-0">
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className={cn(
-                  "h-8 w-8 text-primary hover:bg-primary/20",
-                  hasVoted
-                    ? "bg-primary/10 text-primary hover:bg-primary/20"
-                    : "hover:bg-primary/10 hover:text-primary"
-                )}
-              >
-                <ChevronUpIcon className="size-5" />
-              </Button>
-              <span className="text-sm font-semibold transition-colors text-foreground">
-                {product.voteCount}
-              </span>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className={cn(
-                  "h-8 w-8 text-primary hover:text-destructive",
-                  hasVoted
-                    ? "hover:text-destructive"
-                    : "opacity-50 cursor-not-allowed"
-                )}
-              >
-                <ChevronDownIcon className="size-5" />
-              </Button>
-            </div>
+            <VotingButtons voteCount={product.voteCount} hasVoted />
           </div>
         </CardHeader>
         <CardFooter>
