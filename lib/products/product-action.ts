@@ -19,12 +19,19 @@ export const addProductAction = async (
   console.log(formData);
 
   try {
-    const { userId } = await auth();
+    const { userId, orgId } = await auth();
 
     if (!userId) {
       return {
         success: false,
-        errors: { auth: "User must be logged in to submit a product." },
+        message: "User must be logged in to submit a product.",
+      };
+    }
+
+    if (!orgId) {
+      return {
+        success: false,
+        message: "User must belong to an organization to submit a product.",
       };
     }
 
@@ -59,6 +66,7 @@ export const addProductAction = async (
       description,
       status: "pending",
       submittedBy: userEmail,
+      organizationId: orgId,
       userId,
     });
     return {
