@@ -13,10 +13,9 @@ import { cn } from "@/lib/utils";
 import { InferSelectModel } from "drizzle-orm";
 import { products } from "@/db/schema";
 import VotingButtons from "./voting-button";
+import { ProductType } from "@/types";
 
-type Product = InferSelectModel<typeof products>;
-
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = ({ product }: { product: ProductType }) => {
   const hasVoted = false;
   return (
     <Link href={`/products/${product.slug}`}>
