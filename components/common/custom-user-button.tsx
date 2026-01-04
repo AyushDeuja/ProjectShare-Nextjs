@@ -26,7 +26,7 @@ export default function CustomUserButton() {
           />
         </div>
       </UserButton.UserProfilePage>
-      {/* <UserButton.UserProfilePage
+      <UserButton.UserProfilePage
         label="Admin"
         labelIcon={<Building2Icon className="size-4" />}
         url="admin"
@@ -39,7 +39,7 @@ export default function CustomUserButton() {
             </Button>
           </Link>
         </div>
-      </UserButton.UserProfilePage> */}
+      </UserButton.UserProfilePage>
     </UserButton>
   );
 }
