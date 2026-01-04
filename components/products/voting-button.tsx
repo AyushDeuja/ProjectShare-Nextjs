@@ -15,7 +15,7 @@ const VotingButtons = ({
   voteCount: initialVoteCount,
   productId,
 }: {
-  hasVoted: boolean;
+  hasVoted?: boolean;
   voteCount: number;
   productId?: number;
 }) => {
